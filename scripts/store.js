@@ -48,14 +48,27 @@ const store = (function () {
     store.items.splice(index, 1);
   };
 
-  const toggleCheckedFilter = function() {
+  const toggleCheckedFilter = function () {
     this.hideCheckedItems=!this.hideCheckedItems;
   };
 
-  const setSearchTerm =function(input){
+  const setSearchTerm = function (input) {
     this.searchTerm = input;
   };
 
+  const getItems = function () {
+    let filteredItems = this.items;
+    // Filter out checked items if hideCheckedItems is true
+    if (this.hideCheckedItems) {
+      filteredItems = filteredItems.filter(item => !item.checked);
+    }
+    // Filter out search items if searchTerm is not empty
+    if (this.searchTerm) {
+      filteredItems = filteredItems.filter(item => item.name.includes(this.searchTerm));
+    }
+    return filteredItems;
+
+  };
 
   return {
     items,
@@ -68,30 +81,10 @@ const store = (function () {
     findAndDelete,
     toggleCheckedFilter,
     setSearchTerm,
+    getItems,
   };
 
 }() );
 
-/* global shoppingList, cuid */
 
-// eslint-disable-next-line no-unused-vars
-/*
-const store = {
-  items: [
-    { id: cuid(), name: 'apples', checked: false },
-    { id: cuid(), name: 'oranges', checked: false },
-    { id: cuid(), name: 'milk', checked: true },
-    { id: cuid(), name: 'bread', checked: false }
-  ],
-  hideCheckedItems: false,
-  searchTerm: ''
-};
-  
-function main() {
-  shoppingList.bindEventListeners();
-  shoppingList.render();
-}
-  
-$(main);
-*/
   

@@ -1,4 +1,5 @@
 'use strict';
+/* global store, Item, $ */
 
 const store = (function () {
   let items = [
@@ -10,10 +11,54 @@ const store = (function () {
   let hideCheckedItems = false;
   let searchTerm = '';
 
+  const findById = function (id) {   
+    return store.items.find(item => id === item.id);
+  };
+
+  const addItem = function (name) {
+    try {
+      Item.validateName(name); 
+      store.items.push(Item.create(name));
+    }
+    catch(error) {
+      console.log(`Cannot add item. ${error.message}`);
+    }
+
+  };
+
+  const findAndToggleChecked = function (id) {
+    const foundItem = store.findById(id);
+    foundItem.checked = !foundItem.checked;
+  };
+
+  const findAndUpdateName = function (id, itemName) {
+    try {
+      Item.validateName(itemName);
+      const foundItem = store.findById(id);
+      foundItem.name = itemName;
+    }
+    catch (error) {
+      console.log(`Cannot update name: ${error.message}`);
+
+    }
+  };
+
+  const findAndDelete = function (id) {
+    const index = store.items.findIndex(item => item.id === id);
+    store.items.splice(index, 1);
+  };
+
+
+
   return {
     items,
     hideCheckedItems,
-    searchTerm
+    searchTerm,
+    findById,
+    addItem,
+    findAndToggleChecked,
+    findAndUpdateName,
+    findAndDelete,
   };
 
 }() );

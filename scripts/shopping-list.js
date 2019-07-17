@@ -57,14 +57,9 @@ const shoppingList = (function(){
   
   
   function addItemToShoppingList(itemName) {
-    try {
-      Item.validateName(itemName); 
-      store.items.push(Item.create(itemName));
-      render();
-    }
-    catch(error) {
-      console.log(`Cannot add item. ${error.message}`);
-    }
+    store.addItem(itemName);
+    render();
+    
   }
   
   function handleNewItemSubmit() {
@@ -78,8 +73,7 @@ const shoppingList = (function(){
   }
   
   function toggleCheckedForListItem(id) {
-    const foundItem = store.items.find(item => item.id === id);
-    foundItem.checked = !foundItem.checked;
+    store.findAndToggleChecked(id);
   }
   
   
@@ -103,8 +97,7 @@ const shoppingList = (function(){
   }
   
   function editListItemName(id, itemName) {
-    const item = store.items.find(item => item.id === id);
-    item.name = itemName;
+    store.findAndUpdateName(id, itemName);
   }
   
   function toggleCheckedItemsFilter() {

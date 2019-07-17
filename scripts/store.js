@@ -12,13 +12,13 @@ const store = (function () {
   let searchTerm = '';
 
   const findById = function (id) {   
-    return store.items.find(item => id === item.id);
+    return items.find(item => id === item.id);
   };
 
   const addItem = function (name) {
     try {
       Item.validateName(name); 
-      store.items.push(Item.create(name));
+      items.push(Item.create(name));
     }
     catch(error) {
       console.log(`Cannot add item. ${error.message}`);
@@ -44,8 +44,8 @@ const store = (function () {
   };
 
   const findAndDelete = function (id) {
-    const index = store.items.findIndex(item => item.id === id);
-    store.items.splice(index, 1);
+    const index = items.findIndex(item => item.id === id);
+    items.splice(index, 1);
   };
 
   const toggleCheckedFilter = function () {
@@ -57,7 +57,7 @@ const store = (function () {
   };
 
   const getItems = function () {
-    let filteredItems = this.items;
+    let filteredItems = items;
     // Filter out checked items if hideCheckedItems is true
     if (this.hideCheckedItems) {
       filteredItems = filteredItems.filter(item => !item.checked);
@@ -70,8 +70,7 @@ const store = (function () {
 
   };
 
-  return {
-    items,
+  return {    
     hideCheckedItems,
     searchTerm,
     findById,
